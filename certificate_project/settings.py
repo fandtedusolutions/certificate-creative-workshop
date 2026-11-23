@@ -28,6 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://certificate.natdemy.com',
+    'http://certificate.natdemy.com',
+]
+
 
 # Application definition
 

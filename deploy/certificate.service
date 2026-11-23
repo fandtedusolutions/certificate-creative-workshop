@@ -1,0 +1,14 @@
+[Unit]
+Description=Gunicorn daemon for Natdemy Certificate Portal
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/var/www/certificate.natdemy.com
+ExecStart=/var/www/certificate.natdemy.com/venv/bin/gunicorn --workers 3 --bind unix:/var/www/certificate.natdemy.com/gunicorn.sock certificate_project.wsgi:application
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
