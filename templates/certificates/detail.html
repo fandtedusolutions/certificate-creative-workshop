@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Certificate - {{ lead.name }} | Natdemy{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        
+        <!-- Header Banner -->
+        <div class="text-center mb-4">
+            <span class="workshop-tag mb-2">
+                <i class="bi bi-check-circle-fill text-success"></i> Certificate Issued & Verified
+            </span>
+            <h1 class="h2 fw-bold text-dark mt-2 mb-1">Congratulations, {{ lead.name }}!</h1>
+            <p class="text-muted">
+                Your official Certificate of Participation for the <strong>Natdemy Creative Workshop</strong> is ready.
+            </p>
+        </div>
+
+        <div class="row justify-content-center g-4">
+            
+            <!-- Left Column: Certificate High-Resolution Preview -->
+            <div class="col-lg-8">
+                <div class="portal-card p-3 p-md-4 shadow-lg">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3 px-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-primary px-3 py-2 rounded-pill">{{ lead.student_class }}</span>
+                            <span class="text-muted small d-none d-sm-inline">
+                                <i class="bi bi-clock me-1"></i> Issued: {{ lead.created_at|date:"M d, Y" }}
+                            </span>
+                        </div>
+                        <a href="{% url 'certificates:certificate_preview' lead.certificate_uuid %}" 
+                           target="_blank" 
+                           class="btn btn-sm btn-outline-secondary rounded-pill">
+                            <i class="bi bi-arrows-fullscreen me-1"></i> Full View
+                        </a>
+                    </div>
+
+                    <!-- Certificate Image Preview -->
+                    <div class="text-center bg-light rounded-3 p-2 position-relative border">
+                        <img src="{% url 'certificates:certificate_preview' lead.certificate_uuid %}" 
+                             alt="Certificate for {{ lead.name }}" 
+                             class="img-fluid rounded shadow-sm"
+                             style="max-height: 520px; width: auto; object-fit: contain;">
+                    </div>
+
+                    <div class="text-center mt-3 text-muted small">
+                        <i class="bi bi-info-circle me-1"></i> Standard A4 High Resolution (3508 &times; 2480 px @ 300 DPI)
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Download & Action Center -->
+            <div class="col-lg-4">
+                <div class="d-flex flex-column gap-3">
+                    
+                    <!-- Download Options Card -->
+                    <div class="portal-card p-4">
+                        <h4 class="h5 fw-bold text-dark mb-3">
+                            <i class="bi bi-download text-primary me-2"></i>Download Options
+                        </h4>
+                        
+                        <div class="d-grid gap-3">
+                            <!-- Download PDF -->
+                            <a href="{% url 'certificates:download_pdf' lead.certificate_uuid %}" 
+                               class="btn btn-gold btn-lg py-3 rounded-pill text-center text-decoration-none">
+                                <i class="bi bi-file-earmark-pdf-fill me-2 fs-5"></i>
+                                <span>Download PDF</span>
+                                <div class="small fw-normal text-muted" style="font-size: 0.75rem;">Print-Ready High Quality Vector (300 DPI)</div>
+                            </a>
+
+                            <!-- Download Image -->
+                            <a href="{% url 'certificates:download_image' lead.certificate_uuid %}" 
+                               class="btn btn-navy btn-lg py-3 rounded-pill text-center text-decoration-none">
+                                <i class="bi bi-file-earmark-image-fill me-2 fs-5"></i>
+                                <span>Download Image (JPG)</span>
+                                <div class="small fw-normal text-white-50" style="font-size: 0.75rem;">High Resolution (3508 &times; 2480 px)</div>
+                            </a>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top text-center">
+                            <span class="text-muted small">
+                                <i class="bi bi-arrow-repeat me-1"></i> Total Downloads: <strong>{{ lead.download_count }}</strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Share & Verify Card -->
+                    <div class="portal-card p-4">
+                        <h5 class="fw-bold text-dark mb-3">
+                            <i class="bi bi-share text-warning me-2"></i>Share Your Achievement
+                        </h5>
+
+                        <div class="d-grid gap-2">
+                            <!-- WhatsApp Share -->
+                            <a href="https://api.whatsapp.com/send?text={{ whatsapp_text }}" 
+                               target="_blank" 
+                               class="btn btn-success py-2 rounded-pill text-white text-decoration-none fw-semibold">
+                                <i class="bi bi-whatsapp me-2"></i> Share on WhatsApp
+                            </a>
+
+                            <!-- Copy Link -->
+                            <button type="button" 
+                                    class="btn btn-outline-dark py-2 rounded-pill fw-semibold" 
+                                    id="copyLinkBtn" 
+                                    onclick="copyShareLink()">
+                                <i class="bi bi-link-45deg me-1"></i> <span id="copyLinkText">Copy Certificate Link</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Need Corrections Card -->
+                    <div class="portal-card p-3 bg-white text-center">
+                        <p class="text-muted small mb-2">Notice any spelling mistake in your name?</p>
+                        <a href="{% url 'certificates:request_certificate' %}" class="btn btn-sm btn-link text-decoration-none text-primary fw-semibold">
+                            <i class="bi bi-pencil-square me-1"></i> Re-enter or Correct Name
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function copyShareLink() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(function() {
+            const btnText = document.getElementById('copyLinkText');
+            const originalText = btnText.innerText;
+            btnText.innerText = "Link Copied! ✓";
+            setTimeout(function() {
+                btnText.innerText = originalText;
+            }, 2500);
+        }).catch(function(err) {
+            alert("Could not copy link: " + err);
+        });
+    }
+</script>
+{% endblock %}
+

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Get Your Certificate | Natdemy Creative Workshop{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center align-items-center g-4">
+            
+            <!-- Left Column: Form & Instructions -->
+            <div class="col-lg-6 col-md-10">
+                <div class="portal-card p-4 p-md-5">
+                    
+                    <div class="mb-4">
+                        <span class="workshop-tag mb-3">
+                            <i class="bi bi-award-fill"></i> Official Participation Certificate
+                        </span>
+                        <h1 class="h2 fw-bold text-dark mt-2 mb-2">Claim Your Certificate</h1>
+                        <p class="text-muted">
+                            Successfully participated in the <strong>Creative Workshop</strong> conducted by <strong>Natdemy</strong> at <strong>St. Joseph's College Devagiri, Kozhikode</strong>? Enter your details below to instantly download your verified certificate.
+                        </p>
+                    </div>
+
+                    <!-- Student Certificate Form -->
+                    <form method="POST" id="certificateForm" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-semibold text-dark">
+                                <i class="bi bi-person-fill text-primary me-1"></i> {{ form.name.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.name }}
+                            <small class="form-text text-muted">Please enter your exact name as it should appear on your certificate.</small>
+                            {% if form.name.errors %}
+                                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Class Dropdown -->
+                        <div class="mb-3">
+                            <label for="{{ form.student_class.id_for_label }}" class="form-label fw-semibold text-dark">
+                                <i class="bi bi-mortarboard-fill text-primary me-1"></i> {{ form.student_class.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.student_class }}
+                            {% if form.student_class.errors %}
+                                <div class="text-danger small mt-1">{{ form.student_class.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-4">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label fw-semibold text-dark">
+                                <i class="bi bi-telephone-fill text-primary me-1"></i> {{ form.phone_number.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.phone_number }}
+                            <small class="form-text text-muted">We will send workshop updates and future creative opportunities to this number.</small>
+                            {% if form.phone_number.errors %}
+                                <div class="text-danger small mt-1">{{ form.phone_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" id="submitBtn" class="btn btn-gold btn-lg py-3 rounded-pill">
+                                <span class="normal-state">
+                                    <i class="bi bi-file-earmark-check-fill me-2"></i> Get Certificate
+                                </span>
+                                <span class="loading-state d-none">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Generating Your Certificate...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Trust indicators -->
+                    <div class="row g-2 mt-4 pt-3 border-top text-center text-muted small">
+                        <div class="col-4">
+                            <i class="bi bi-shield-check text-success d-block fs-5"></i>
+                            <span>Verified CAO</span>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-filetype-pdf text-danger d-block fs-5"></i>
+                            <span>Print-Ready PDF</span>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-lightning-charge text-warning d-block fs-5"></i>
+                            <span>Instant Access</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Visual Preview & Workshop Info -->
+            <div class="col-lg-6 col-md-10">
+                <div class="p-2">
+                    <div class="text-center mb-3">
+                        <span class="badge bg-dark px-3 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-eye me-1"></i> Official Certificate Preview
+                        </span>
+                    </div>
+
+                    <div class="position-relative shadow-lg rounded-4 overflow-hidden border border-2 border-white">
+                        <img src="{% static 'certificates/images/template.jpg' %}" 
+                             alt="Certificate Preview" 
+                             class="img-fluid w-100 d-block" 
+                             style="filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));">
+                        <div class="position-absolute start-50 translate-middle-x text-center" 
+                             style="top: 48%; width: 70%; pointer-events: none;">
+                            <span class="badge bg-primary bg-opacity-75 text-white px-3 py-1 rounded-pill small">
+                                ✨ Your name will appear here
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Workshop Highlights Card -->
+                    <div class="portal-card p-4 mt-4 bg-white">
+                        <h5 class="fw-bold text-dark mb-2">
+                            <i class="bi bi-stars text-warning me-2"></i>About the Workshop
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            The creative workshop provided hands-on insights into creative thinking, design techniques, practical real-world applications, and building a professional creative portfolio.
+                        </p>
+                        <div class="d-flex flex-wrap gap-2 text-secondary small">
+                            <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-geo-alt me-1"></i>Devagiri, Kozhikode</span>
+                            <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-calendar3 me-1"></i>23 Nov 2026</span>
+                            <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-award me-1"></i>Best Excellence 2026</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Show spinner on form submit
+    const form = document.getElementById('certificateForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const normalState = submitBtn.querySelector('.normal-state');
+    const loadingState = submitBtn.querySelector('.loading-state');
+
+    form.addEventListener('submit', function() {
+        if (form.checkValidity()) {
+            normalState.classList.add('d-none');
+            loadingState.classList.remove('d-none');
+            submitBtn.setAttribute('disabled', 'disabled');
+        }
+    });
+</script>
+{% endblock %}
+
