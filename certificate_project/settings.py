@@ -26,7 +26,12 @@ SECRET_KEY = 'django-insecure-isyugfs87ao5h-w$3)x^_pes9@)*20ub88#^xuu6ta2)!q+o8y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'certificate.natdemy.com',
+    'localhost',
+    '127.0.0.1',
+    '*',
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://certificate.natdemy.com',

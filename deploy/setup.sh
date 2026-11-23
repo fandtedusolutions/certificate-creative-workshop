@@ -59,3 +59,4 @@ echo "=========================================================="
 echo " Setup complete! Next step: SSL with Certbot:             "
 echo " sudo certbot --nginx -d certificate.natdemy.com          "
 echo "=========================================================="
+
