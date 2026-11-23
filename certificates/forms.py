@@ -1,6 +1,6 @@
 import re
 from django import forms
-from .models import StudentLead
+from .models import StudentLead, format_student_name
 
 
 class StudentLeadForm(forms.ModelForm):
@@ -13,6 +13,7 @@ class StudentLeadForm(forms.ModelForm):
                 'placeholder': 'Enter your full name',
                 'autocomplete': 'name',
                 'required': 'required',
+                'style': 'text-transform: capitalize;',
             }),
             'student_class': forms.Select(attrs={
                 'class': 'form-select form-select-lg',
@@ -40,8 +41,8 @@ class StudentLeadForm(forms.ModelForm):
         name = self.cleaned_data.get('name', '').strip()
         if len(name) < 2:
             raise forms.ValidationError("Please enter your complete name.")
-        # Capitalize each word properly for the certificate
-        return ' '.join(word.capitalize() for word in name.split())
+        # Ensure first letter of every word is capitalized
+        return format_student_name(name)
 
     def clean_phone_number(self):
         phone = self.cleaned_data.get('phone_number', '').strip()

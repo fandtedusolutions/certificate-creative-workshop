@@ -141,6 +141,19 @@
 
 {% block extra_js %}
 <script>
+    // Automatically capitalize first letter of each word while typing
+    const nameInput = document.getElementById('{{ form.name.id_for_label }}');
+    if (nameInput) {
+        nameInput.addEventListener('input', function() {
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            this.value = this.value.replace(/\b\w/g, function(char) {
+                return char.toUpperCase();
+            });
+            this.setSelectionRange(start, end);
+        });
+    }
+
     // Show spinner on form submit
     const form = document.getElementById('certificateForm');
     const submitBtn = document.getElementById('submitBtn');

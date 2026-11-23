@@ -3,6 +3,24 @@ from django.db import models
 from django.urls import reverse
 
 
+def format_student_name(name: str) -> str:
+    """Capitalize the first letter of each word in the candidate's name."""
+    if not name:
+        return ""
+    words = name.strip().split()
+    formatted = []
+    for w in words:
+        if '.' in w:
+            parts = [p.capitalize() for p in w.split('.')]
+            formatted.append('.'.join(parts))
+        elif '-' in w:
+            parts = [p.capitalize() for p in w.split('-')]
+            formatted.append('-'.join(parts))
+        else:
+            formatted.append(w.capitalize())
+    return ' '.join(formatted)
+
+
 class StudentLead(models.Model):
     CLASS_CHOICES = [
         ('1st Year', '1st Year'),
@@ -53,6 +71,11 @@ class StudentLead(models.Model):
         ordering = ['-created_at']
         verbose_name = "Student Lead"
         verbose_name_plural = "Student Leads & Certificates"
+
+    def save(self, *args, **kwargs):
+        if self.name:
+            self.name = format_student_name(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.student_class}) - {self.phone_number}"

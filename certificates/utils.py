@@ -44,6 +44,21 @@ def generate_certificate_image(student_name: str) -> Image.Image:
     Renders candidate name on the high-resolution certificate template.
     Returns a Pillow Image object.
     """
+    # Guarantee first letter of every word is capitalized
+    if student_name:
+        words = student_name.strip().split()
+        formatted = []
+        for w in words:
+            if '.' in w:
+                parts = [p.capitalize() for p in w.split('.')]
+                formatted.append('.'.join(parts))
+            elif '-' in w:
+                parts = [p.capitalize() for p in w.split('-')]
+                formatted.append('-'.join(parts))
+            else:
+                formatted.append(w.capitalize())
+        student_name = ' '.join(formatted)
+
     template_path = get_template_path()
     im = Image.open(template_path).convert('RGB')
     draw = ImageDraw.Draw(im)
